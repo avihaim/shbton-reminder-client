@@ -171,10 +171,11 @@ var app = {
                     
                     
                     request = $.ajax({
-                        url: "http://192.168.1.100:8080/shbton/users/notifications/" +e.regid,
-                        type: "GET",
+                        url: "http://192.168.1.100:8080/shbton/users/notifications",
+                        type: "POST",
                         async: false,
-                        dataType: "String"
+                        dataType: "String",
+                        data: e.regid
                     });
                	 
                	 	request.success(function(data, textStatus, jqXHR ) {
