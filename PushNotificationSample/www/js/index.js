@@ -176,26 +176,16 @@ var app = {
                         async: false,
                         data: "bd"
                     });
-               	 
-               	 	request.success(function(data, textStatus, jqXHR ) {
-                    	alert( "success " + data);
-                    	window.localStorage.setItem("userId", data);
-                    	window.localStorage.setItem("notificationId", e.regid);
-                    });
                     
                     request.fail(function( jqXHR, textStatus ) {
                     	alert( "Request failed: " + textStatus );
                     });
                     
                     request.done(function(userId) {
-                    	alert( "success " + userId);
-                    	window.localStorage.setItem("userId", userId);
+                    	alert( "success");
                     	window.localStorage.setItem("notificationId", e.regid);
                     });
                     
-                    request.fail(function( jqXHR, textStatus ) {
-                    	alert( "Request failed: " + textStatus );
-                    });
                     
                 }
             break;
@@ -235,5 +225,21 @@ $(document)
 .ready(
 
 function() {
+	
+	request = $.ajax({
+        url: "http://192.168.1.100:8080/shbton/users/dfv/notifications",
+        type: "POST",
+        data: "bd"
+    });
+    
+    request.fail(function( jqXHR, textStatus ) {
+    	alert( "Request failed: " + textStatus );
+    });
+    
+    request.done(function(userId) {
+    	alert( "success");
+//    	window.localStorage.setItem("notificationId", e.regid);
+    });
+    
 	app.initialize();
 });
