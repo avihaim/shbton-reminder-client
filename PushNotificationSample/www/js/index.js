@@ -137,7 +137,7 @@ var app = {
         
         alert("regid (getItem) = " + regid);
         
-        if(result == 'undefined') {
+        if(result == null) {
 	        var pushNotification = window.plugins.pushNotification;
 	        if (device.platform == 'android' || device.platform == 'Android') {
 	            alert("Register called");
