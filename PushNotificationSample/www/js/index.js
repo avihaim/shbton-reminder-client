@@ -16,6 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+
 var app = {
 		
 		slidePage : function(page) {
@@ -99,6 +101,7 @@ var app = {
 		},
     // Application Constructor
     initialize: function() {
+    	
         this.bindEvents();
         
         var self = this;
@@ -134,8 +137,10 @@ var app = {
         console.log('Received Event: ' + id);
         
         var regid = window.localStorage.getItem("notificationId");
+        var userId = window.localStorage.getItem("userId");
         
         alert("regid (getItem) = " + regid);
+        alert("userId (getItem) = " + userId);
         
 //        if(result == null) {
 	        var pushNotification = window.plugins.pushNotification;
@@ -166,16 +171,31 @@ var app = {
                     
                     
                     request = $.ajax({
-                        url: "http://192.168.56.1:8080/shbton/notifications/",
-                        type: "post",
-                        data: e.regid
+                        url: "http://192.168.1.100:8080/shbton/users/notifications/" +e.regid,
+                        type: "GET",
+                        async: false,
+                        dataType: "String"
+                    });
+               	 
+               	 	request.success(function(data, textStatus, jqXHR ) {
+                    	alert( "success " + data);
+                    	window.localStorage.setItem("userId", data);
+                    	window.localStorage.setItem("notificationId", e.regid);
+                    });
+                    
+                    request.fail(function( jqXHR, textStatus ) {
+                    	alert( "Request failed: " + textStatus );
                     });
                     
                     request.done(function(userId) {
                     	alert( "success " + userId);
                     	window.localStorage.setItem("userId", userId);
                     	window.localStorage.setItem("notificationId", e.regid);
-                    })
+                    });
+                    
+                    request.fail(function( jqXHR, textStatus ) {
+                    	alert( "Request failed: " + textStatus );
+                    });
                     
                 }
             break;
@@ -210,3 +230,10 @@ var app = {
         }
     }
 };
+
+$(document)
+.ready(
+
+function() {
+	app.initialize();
+});
