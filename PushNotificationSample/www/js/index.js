@@ -174,7 +174,7 @@ var app = {
                         url: 'http://192.168.1.100:8080/shbton/users/dfv/notifications',
                         type: 'POST',
                         async: false,
-                        data: 'bd'
+                        data: e.regid
                     });
                     
                     request.fail(function( jqXHR, textStatus ) {
@@ -226,20 +226,5 @@ $(document)
 
 function() {
 	
-	request = $.ajax({
-        url: "http://192.168.1.100:8080/shbton/users/dfv/notifications",
-        type: "POST",
-        data: "bd"
-    });
-    
-    request.fail(function( jqXHR, textStatus ) {
-    	alert( "Request failed: " + textStatus );
-    });
-    
-    request.done(function() {
-    	alert( "success");
-//    	window.localStorage.setItem("notificationId", e.regid);
-    });
-    
 	app.initialize();
 });
