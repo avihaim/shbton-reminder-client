@@ -104,7 +104,7 @@ var app = {
         var self = this;
 		this.detailsURL = /^#employees\/(\d{1,})/;
 		this.registerEvents();
-		this.store = new MemoryStore(function() {
+		this.store = new LocalStorageStore(function() {
 			self.route();
 		});
     },
@@ -132,14 +132,21 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
-        var pushNotification = window.plugins.pushNotification;
-        if (device.platform == 'android' || device.platform == 'Android') {
-            alert("Register called");
-            pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"346033639851","ecb":"app.onNotificationGCM"});
-        }
-        else {
-            alert("Register called");
-            pushNotification.register(this.successHandler,this.errorHandler,{"badge":"true","sound":"true","alert":"true","ecb":"app.onNotificationAPN"});
+        
+        var regid = window.localStorage.getItem("notificationId");
+        
+        alert("regid (getItem) = " + regid);
+        
+        if(result == 'undefined') {
+	        var pushNotification = window.plugins.pushNotification;
+	        if (device.platform == 'android' || device.platform == 'Android') {
+	            alert("Register called");
+	            pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"346033639851","ecb":"app.onNotificationGCM"});
+	        }
+	        else {
+	            alert("Register called");
+	            pushNotification.register(this.successHandler,this.errorHandler,{"badge":"true","sound":"true","alert":"true","ecb":"app.onNotificationAPN"});
+	        }
         }
     },
     // result contains any message sent from the plugin call
@@ -157,6 +164,20 @@ var app = {
                 {
                     console.log("Regid " + e.regid);
                     alert('registration id = '+e.regid);
+                    
+                    
+                    request = $.ajax({
+                        url: "http://192.168.56.1:8080/shbton/notifications/",
+                        type: "post",
+                        data: e.regid
+                    });
+                    
+                    request.done(function(userId) {
+                    	alert( "success " + userId);
+                    	window.localStorage.setItem("userId", userId);
+                    	window.localStorage.setItem("notificationId", e.regid);
+                    })
+                    
                 }
             break;
  
