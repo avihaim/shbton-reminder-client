@@ -146,8 +146,7 @@ var app = {
         	request = $.ajax({
                 url: URL,
                 type: 'GET',
-                async: false,
-                data: e.regid
+                async: false
             });
              
             request.fail(function( jqXHR, textStatus ) {
@@ -242,6 +241,5 @@ $(document)
 .ready(
 
 function() {
-	
 	app.initialize();
 });
