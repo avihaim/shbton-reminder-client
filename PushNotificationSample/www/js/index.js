@@ -145,7 +145,7 @@ var app = {
         if(userId == '') {
         	request = $.ajax({
                 url: URL,
-                type: 'get',
+                type: 'GET',
                 async: false,
                 data: e.regid
             });
