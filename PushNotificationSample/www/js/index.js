@@ -17,7 +17,7 @@
  * under the License.
  */
 
-
+var URL = 'http://192.168.1.100:8080/shbton/users/';
 var app = {
 		
 		slidePage : function(page) {
@@ -142,7 +142,24 @@ var app = {
         alert("regid (getItem) = " + regid);
         alert("userId (getItem) = " + userId);
         
-//        if(result == null) {
+        if(userId == '') {
+        	request = $.ajax({
+                url: URL,
+                type: 'get',
+                async: false,
+                data: e.regid
+            });
+            
+            request.fail(function( jqXHR, textStatus ) {
+            	alert( "Request failed: " + textStatus );
+            });
+            
+            request.done(function(userId) {
+            	alert( "success userId " + userId );
+            	window.localStorage.setItem("userId", userId);
+            });
+        }
+//        if(regid == '') {
 	        var pushNotification = window.plugins.pushNotification;
 	        if (device.platform == 'android' || device.platform == 'Android') {
 	            alert("Register called");
@@ -168,10 +185,10 @@ var app = {
                 {
                     console.log("Regid " + e.regid);
                     alert('registration id = '+e.regid);
-                    
+                    var userId = window.localStorage.getItem("userId");
                     
                     request = $.ajax({
-                        url: 'http://192.168.1.100:8080/shbton/users/dfv/notifications',
+                        url: URL + userId +'/notifications',
                         type: 'POST',
                         async: false,
                         data: e.regid
