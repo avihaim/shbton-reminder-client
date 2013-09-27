@@ -137,17 +137,16 @@ var app = {
         
         alert("regid (getItem) = " + regid);
         
-        if(result == null) {
+//        if(result == null) {
 	        var pushNotification = window.plugins.pushNotification;
 	        if (device.platform == 'android' || device.platform == 'Android') {
 	            alert("Register called");
 	            pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"346033639851","ecb":"app.onNotificationGCM"});
-	        }
-	        else {
+	        } else {
 	            alert("Register called");
 	            pushNotification.register(this.successHandler,this.errorHandler,{"badge":"true","sound":"true","alert":"true","ecb":"app.onNotificationAPN"});
 	        }
-        }
+//        }
     },
     // result contains any message sent from the plugin call
     successHandler: function(result) {
