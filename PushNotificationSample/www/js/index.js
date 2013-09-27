@@ -100,6 +100,13 @@ var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
+        
+        var self = this;
+		this.detailsURL = /^#employees\/(\d{1,})/;
+		this.registerEvents();
+		this.store = new MemoryStore(function() {
+			self.route();
+		});
     },
     // Bind Event Listeners
     //
