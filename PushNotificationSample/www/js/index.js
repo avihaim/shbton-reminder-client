@@ -196,7 +196,7 @@ var app = {
                     request.done(function() {
                     	window.localStorage.setItem("notificationId", e.regid);
                     });
-                    
+                     
                     
                 }
             break;
