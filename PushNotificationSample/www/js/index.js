@@ -139,9 +139,6 @@ var app = {
         var regid = window.localStorage.getItem("notificationId");
         var userId = window.localStorage.getItem("userId");
         
-        alert("regid (getItem) = " + regid);
-        alert("userId (getItem) = " + userId);
-        
         if(userId == '') {
         	request = $.ajax({
                 url: URL,
@@ -154,7 +151,6 @@ var app = {
             });
             
             request.done(function(userId) {
-            	alert( "success userId " + userId );
             	window.localStorage.setItem("userId", userId);
             });
         }
@@ -189,7 +185,7 @@ var app = {
                     request = $.ajax({
                         url: URL + userId +'/notifications',
                         type: 'POST',
-                        async: false,
+                        async: true,
                         data: e.regid
                     });
                     
@@ -198,7 +194,6 @@ var app = {
                     });
                     
                     request.done(function() {
-                    	alert( "success");
                     	window.localStorage.setItem("notificationId", e.regid);
                     });
                     
