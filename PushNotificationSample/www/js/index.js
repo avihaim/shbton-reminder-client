@@ -18,6 +18,7 @@
  */
 
 var URL = 'http://192.168.1.100:8080/shbton/users/';
+var USER_ID = 'user1';
 var app = {
 		
 		slidePage : function(page) {
@@ -94,8 +95,32 @@ var app = {
 		    }
 		    var match = hash.match(this.detailsURL);
 		    if (match) {
-		        this.store.findById(Number(match[1]), function(employee) {
-		            self.slidePage(new EmployeeView(employee).render());
+		        this.store.findById(Number(match[1]), function(reminder) {
+		            self.slidePage(new EmployeeView(reminder).render());
+		            
+		            $('.save').bind( "click", function() {
+		            	
+		            	var reminder = "{\"id\": \"1\"," +
+		            			"\"text\":\"" + $('#text').val() + "\"," +
+		            			"\"isShbat\": \"true\"," +
+		            			"\"isHoliday\":\"false\", " +
+		            			"\"isBefore\": \"true\"," +
+		            			"\"days\":\""+$('#days').val() + "\", " +
+		            			"\"hours\":\""+$('#hours').val() + "\"," +
+		            			"\"minutes\":\""+$('#minutes').val() + "\"}";
+		            	
+		                var request = $.ajax({
+	                        url: URL + USER_ID + '/reminders',
+	                        type: 'post',
+	                        crossDomain: true,
+	                        async: true,
+	                        data: reminder,
+	                        dataType: 'json'
+	                    });
+//	                    
+		            });
+		            
+		            
 		        });
 		    }
 		},
@@ -105,11 +130,13 @@ var app = {
         this.bindEvents();
         
         var self = this;
-		this.detailsURL = /^#employees\/(\d{1,})/;
+		this.detailsURL = /^#reminders\/(\d{1,})/;
 		this.registerEvents();
 		this.store = new LocalStorageStore(function() {
 			self.route();
 		});
+		
+		
     },
     // Bind Event Listeners
     //
@@ -154,20 +181,22 @@ var app = {
             	window.localStorage.setItem("userId", userId);
             });
         }
+        
+        USER_ID = userId;
 //        if(regid == '') {
 	        var pushNotification = window.plugins.pushNotification;
 	        if (device.platform == 'android' || device.platform == 'Android') {
-	            alert("Register called");
+	            //alert("Register called");
 	            pushNotification.register(this.successHandler, this.errorHandler,{"senderID":"346033639851","ecb":"app.onNotificationGCM"});
 	        } else {
-	            alert("Register called");
+	           // alert("Register called");
 	            pushNotification.register(this.successHandler,this.errorHandler,{"badge":"true","sound":"true","alert":"true","ecb":"app.onNotificationAPN"});
 	        }
 //        }
     },
     // result contains any message sent from the plugin call
     successHandler: function(result) {
-        alert('Callback Success! Result = '+result)
+        //alert('Callback Success! Result = '+result)
     },
     errorHandler:function(error) {
         alert(error);
@@ -179,7 +208,7 @@ var app = {
                 if ( e.regid.length > 0 )
                 {
                     console.log("Regid " + e.regid);
-                    alert('registration id = '+e.regid);
+                   // alert('registration id = '+e.regid);
                     var userId = window.localStorage.getItem("userId");
                     
                     request = $.ajax({
