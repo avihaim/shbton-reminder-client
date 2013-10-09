@@ -14,8 +14,9 @@ var LocalStorageStore = function(successCallback, errorCallback) {
         callLater(callback, reminders);
     }
     
-    this.addReminders = function( data ) {
-    	alert(data);
+    this.addReminders = function( reminders ) {
+    	alert(reminders);
+    	window.localStorage.setItem("reminders", JSON.stringify(reminders));
 //    	$.each( data, function( i, item ) { 
 //    		//reminders.push(item);
 //    		}); 
@@ -45,20 +46,6 @@ var LocalStorageStore = function(successCallback, errorCallback) {
         }
     }
 
-    var request = $.ajax({
-        url: URL + USER_ID + '/reminders',
-        type: 'get',
-        crossDomain: true
-    });
-    
-    request.done(function(data) {
-    	alert(data);
-    });
-    
-    request.fail(function( jqXHR, textStatus ) {
-    	alert( "Request failed: " + textStatus );
-    });
-    
     //$.getJSON( URL + USER_ID + '/reminders', this.addReminders);
     	
     
