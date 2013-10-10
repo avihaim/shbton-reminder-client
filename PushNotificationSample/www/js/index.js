@@ -175,6 +175,22 @@ var app = {
 		this.getCandleLighting = /^#candleLighting/;
 		this.registerEvents();
 		
+		var regid = window.localStorage.getItem("notificationId")
+		request = $.ajax({
+			url : URL + userId + '/notifications',
+			type : 'POST',
+			async : true,
+			data : regid
+		});
+
+		request.fail(function(jqXHR, textStatus) {
+			alert("Request failed: " + textStatus);
+		});
+
+		request.done(function() {
+			window.localStorage.setItem("notificationId", e.regid);
+		});
+		
 	},
 	// Bind Event Listeners
 	//
@@ -199,7 +215,7 @@ var app = {
 //		listeningElement.setAttribute('style', 'display:none;');
 //		receivedElement.setAttribute('style', 'display:block;');
 		alert("receivedEvent");
-		console.log('Received Event: ' + id);
+		//console.log('Received Event: ' + id);
 
 		var regid = window.localStorage.getItem("notificationId");
 		var userId = window.localStorage.getItem("userId");
