@@ -207,7 +207,7 @@ var app = {
 		// if(regid == '') {
 		var pushNotification = window.plugins.pushNotification;
 		if (device.platform == 'android' || device.platform == 'Android') {
-			// alert("Register called");
+			alert("Register called");
 			pushNotification.register(this.successHandler, this.errorHandler, {
 				"senderID" : "346033639851",
 				"ecb" : "app.onNotificationGCM"
@@ -235,7 +235,7 @@ var app = {
 		case 'registered':
 			if (e.regid.length > 0) {
 				console.log("Regid " + e.regid);
-				// alert('registration id = '+e.regid);
+				alert('registration id = '+e.regid);
 				var userId = window.localStorage.getItem("userId");
 
 				request = $.ajax({
