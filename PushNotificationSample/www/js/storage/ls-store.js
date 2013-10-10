@@ -49,7 +49,7 @@ var LocalStorageStore = function(successCallback, errorCallback) {
 
     //$.getJSON( URL + USER_ID + '/reminders', this.addReminders);
    // window.localStorage.setItem("reminders", JSON.stringify(remindersTemp));
-    var reminders = window.localStorage.getItem("reminders");
+    var reminders = [];//window.localStorage.getItem("reminders");
     if(reminders.length == 0) {
     	var request = $.ajax({
     		url : URL + USER_ID + '/reminders',
