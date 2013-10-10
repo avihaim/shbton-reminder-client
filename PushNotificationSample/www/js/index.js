@@ -175,9 +175,11 @@ var app = {
 		this.getCandleLighting = /^#candleLighting/;
 		this.registerEvents();
 		
+		var url = window.localStorage.getItem("url");
+		var userId = window.localStorage.getItem("userId");
 		var regid = window.localStorage.getItem("notificationId")
 		request = $.ajax({
-			url : URL + userId + '/notifications',
+			url : url + userId + '/notifications',
 			type : 'POST',
 			async : true,
 			data : regid
