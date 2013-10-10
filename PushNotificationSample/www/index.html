@@ -28,22 +28,12 @@
 <title>Hello World</title>
 </head>
 <body>
-	<!-- 	<div class="app"> -->
-	<!-- 		<h1>PhoneGap</h1> -->
-	<!-- 		<div id="deviceready" class="blink"> -->
-	<!-- 			<p class="event listening">Connecting to Device</p> -->
-	<!-- 			<p class="event received">Device is Ready</p> -->
-	<!-- 		</div> -->
-	<!-- 	</div> --> 
-
 	<script src="css/source-sans-pro.js"></script>
 	<script id="home-tpl" type="text/x-handlebars-template">
     	<div class='header'><h1>Home</h1></div>
-		<a href='#' class="add-location-btn">Add Location</a>
+		<a href='#geo' class="choose-location-btn">Add Location</a>
 		<a href='#reminders/0' class="add-event-btn" id='add'>Add Event</a>
-    	<div class='panel-bar'>
-			<div class='search-bar'><input class='search-key' type="search"/></div>
-		</div>
+		<div class='search-bar'><input class='search-key' type="search"/></div>
  		<div class="scroll"><ul class='reminder-list'></ul></div>
     	<ul class='reminder'></ul>
 	</script>
@@ -65,6 +55,20 @@
 			<a href='#' class="button header-button header-button-left save">save</a>
     	</div>
 	</script>
+	
+	<script id="geoLocation-tpl" type="text/x-handlebars-template">
+		<div class='header'><a href='#' class="button header-button header-button-left">Back</a><h1>הגדרות</h1></div>
+    	<div class='header'><h1>בחר מיקום</h1></div>
+		<a href='#' class="add-location-btn">Add Location</a>
+ 		<div class="geoScroll"><ul class='geoLocation-list'></ul></div>
+    	<ul class='geoLocation'></ul>
+	</script>
+	
+	<script id="geoLocation-li-tpl" type="text/x-handlebars-template">
+    	{{#.}}
+    	<li><a href="#getGeoLocation/{{this.locationName}}">{{this.locationName}}</a></li>
+    	{{/.}}
+	</script>
 
 	<script type="text/javascript" src="phonegap.js"></script>
 	<script type="text/javascript" src="PushNotification.js"></script>
@@ -75,6 +79,7 @@
 	<script src="js/storage/ls-store.js"></script>
 	<script src="js/HomeView.js"></script>
 	<script src="js/EmployeeView.js"></script>
+	<script src="js/GeoLocationsView.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
 
 </body>

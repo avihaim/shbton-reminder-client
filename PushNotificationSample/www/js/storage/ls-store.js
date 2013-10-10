@@ -8,7 +8,16 @@ var LocalStorageStore = function(successCallback, errorCallback) {
                      {"id": "3", "text": "bergrg", "isShbat": "true", "isHoliday":"false", "isBefore": "false", "days":0, "hours":1, "minutes":15},
                      {"id": "4", "text": "gjg", "isShbat": "true", "isHoliday":"false", "isBefore": "false", "days":0, "hours":1, "minutes":15}
                  ];
-	
+	var geoLocations = [ 
+	                     {"locationName":"Tel-Aviv - Israel","latitude":32.0667,"longitude":34.7667,"elevation":0.0,"timeZone":"Asia/Jerusalem"},
+	                     {"locationName":"Jerusalem-Israel","latitude":31.78,"longitude":35.23,"elevation":0.0,"timeZone":"Asia/Jerusalem"},
+	                     {"locationName":"Herzliya - Israel","latitude":32.1658,"longitude":34.8367,"elevation":0.0,"timeZone":"Asia/Jerusalem"},
+	                     {"locationName":"Netanya - Israel","latitude":32.3336,"longitude":34.8578,"elevation":0.0,"timeZone":"Asia/Jerusalem"},
+	                     {"locationName":"Haifa - Israel","latitude":32.8156,"longitude":34.9892,"elevation":0.0,"timeZone":"Asia/Jerusalem"},
+	                     {"locationName":"Elat - Israel","latitude":29.5611,"longitude": 34.9517,"elevation":0.0,"timeZone":"Asia/Jerusalem"},
+	                     {"locationName":"Beersheba - Israel","latitude":31.2333,"longitude":34.7833,"elevation":0.0,"timeZone":"Asia/Jerusalem"},
+	                     {"locationName":"Lakewood, NJ","latitude":40.096,"longitude":-74.222,"elevation":0.0,"timeZone":"America/New_York"}
+	                     ];
     this.findByName = function(searchKey, callback) {
         var reminders = JSON.parse(window.localStorage.getItem("reminders"));
         callLater(callback, reminders);
@@ -18,8 +27,8 @@ var LocalStorageStore = function(successCallback, errorCallback) {
     	
     	//$.getJSON( URL + USER_ID + '/reminders', this.addReminders);
     	   // window.localStorage.setItem("reminders", JSON.stringify(remindersTemp));
-    	    var reminders = [];//window.localStorage.getItem("reminders");
-    	    window.localStorage.setItem("reminders", JSON.stringify(reminders));
+    	    var reminders = window.localStorage.getItem("reminders");
+
     	    if(reminders.length == 0) {
     	    	var request = $.ajax({
     	    		url : URL + USER_ID + '/reminders',
@@ -69,7 +78,28 @@ var LocalStorageStore = function(successCallback, errorCallback) {
         }
     }
 
+    this.getGeoLocations = function(callback) {
+    	var geoLocations = JSON.parse(window.localStorage.getItem("geoLocations"));
+        callLater(callback, geoLocations);
+    }
     
+    this.findGeoByName = function(name, callback) {
+    	var geoLocation = null;
+    	
+        var geoLocations = JSON.parse(window.localStorage.getItem("geoLocations"));
+        var l = geoLocations.length;
+        for (var i=0; i < l; i++) {
+            if (geoLocations[i].locationName === name) {
+            	geoLocation = geoLocations[i];
+                break;
+            }
+        }
+        
+        callLater(callback, geoLocation);
+    }
+
+
+    window.localStorage.setItem("geoLocations", JSON.stringify(geoLocations));
     
     callLater(successCallback);
 

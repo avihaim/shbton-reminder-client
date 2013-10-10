@@ -38,14 +38,14 @@ var app = {
 		$('.stage-right, .stage-left').not('.homePage').remove();
 
 		if (page === app.homePage) {
+			// Forward transition (slide from right)
+			$(page.el).attr('class', 'page stage-right');
+			currentPageDest = "stage-left";
+		} else {
 			// Always apply a Back transition (slide from left) when we go back
 			// to the search page
 			$(page.el).attr('class', 'page stage-left');
 			currentPageDest = "stage-right";
-		} else {
-			// Forward transition (slide from right)
-			$(page.el).attr('class', 'page stage-right');
-			currentPageDest = "stage-left";
 		}
 
 		$('body').append(page.el);
@@ -89,49 +89,81 @@ var app = {
 				this.homePage = new HomeView(this.store).render();
 				this.slidePage(this.homePage);
 			}
+			
+			
 			return;
 		}
 		
-		var match = hash.split("\/")[1]; // hash.match(this.detailsURL);
-		if (match) {
-			this.store.findById(match, function(reminder) {
-				self.slidePage(new EmployeeView(reminder).render());
-
-				$('.save').bind(
-						"click",
-						function() {
-
-							var reminder = "{\"id\": \"" + $('#eventIs').val() + "\"," 
-									+ "\"text\":\"" + $('#text').val() + "\","
-									+ "\"isShbat\": \"true\","
-									+ "\"isHoliday\":\"false\", "
-									+ "\"isBefore\": \"true\"," + "\"days\":\""
-									+ $('#days').val() + "\", "
-									+ "\"hours\":\"" + $('#hours').val()
-									+ "\"," + "\"minutes\":\""
-									+ $('#minutes').val() + "\"}";
-
-							var request = $.ajax({
-								url : URL + USER_ID + '/reminders',
-								type : 'post',
-								crossDomain : true,
-								async : true,
-								data : reminder,
-								dataType : 'json'
-							});
-							//	                    
-						});
-
+		if(hash.match(this.getGeoLocationURL)) {
+			this.slidePage(this.homePage);
+			var match = hash.split("\/")[1];
+			
+			this.store.findGeoByName(match, function(geoLocation) {
+				
+				var geo = "{\"locationName\":\"" +  geoLocation.locationName +"\"," +
+    			"\"latitude\":\"" +  geoLocation.latitude +" \"," +
+    			"\"longitude\":\"" +  geoLocation.longitude +"\"," +
+    			"\"elevation\":\"" +  geoLocation.elevation +"\"," +
+    			"\"timeZone\":\"" +  geoLocation.timeZone +"\"}";
+    	
+		    	 var request = $.ajax({
+		             url: URL + USER_ID + '/geolocations',
+		             type: 'post',
+		             crossDomain: true,
+		             async: true,
+		             data: geo,
+		             dataType: 'json'
+		         });
 			});
+				
+			
+		} else if(hash.match(this.geoURL)) {
+			self.slidePage(new GeoLocationsView(this.store).render());
+		} else {
+			var match = hash.split("\/")[1]; // hash.match(this.detailsURL);
+			if (match) {
+				this.store.findById(match, function(reminder) {
+					self.slidePage(new EmployeeView(reminder).render());
+
+					$('.save').bind(
+							"click",
+							function() {
+
+								var reminder = "{\"id\": \"" + $('#eventIs').val() + "\"," 
+										+ "\"text\":\"" + $('#text').val() + "\","
+										+ "\"isShbat\": \"true\","
+										+ "\"isHoliday\":\"false\", "
+										+ "\"isBefore\": \"true\"," + "\"days\":\""
+										+ $('#days').val() + "\", "
+										+ "\"hours\":\"" + $('#hours').val()
+										+ "\"," + "\"minutes\":\""
+										+ $('#minutes').val() + "\"}";
+
+								var request = $.ajax({
+									url : URL + USER_ID + '/reminders',
+									type : 'post',
+									crossDomain : true,
+									async : true,
+									data : reminder,
+									dataType : 'json'
+								});
+								//	                    
+							});
+
+				});
+			}
 		}
+		
+		
+		
 	},
 	// Application Constructor
 	initialize : function() {
-		//[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}
 		
 		this.bindEvents();
 		var self = this;
-		this.detailsURL = /^#reminders\/(\w|-*)/;
+		this.geoURL = /^#geo/;
+		this.getGeoLocationURL = /^#getGeoLocation/;
 		this.registerEvents();
 		this.store = new LocalStorageStore(function() {
 			self.route();
