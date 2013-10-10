@@ -205,6 +205,7 @@ var app = {
 		var userId = window.localStorage.getItem("userId");
 
 		// if(regid == '') {
+		alert(window.plugins.pushNotification);
 		var pushNotification = window.plugins.pushNotification;
 		alert("receivedEvent 3");
 
