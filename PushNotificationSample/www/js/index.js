@@ -199,12 +199,11 @@ var app = {
 //
 //		listeningElement.setAttribute('style', 'display:none;');
 //		receivedElement.setAttribute('style', 'display:block;');
-		alert("receivedEvent");
 		//console.log('Received Event: ' + id);
 
 		var regid = window.localStorage.getItem("notificationId");
 		var userId = window.localStorage.getItem("userId");
-		alert("receivedEvent 2");
+
 		// if(regid == '') {
 		var pushNotification = window.plugins.pushNotification;
 		alert("receivedEvent 3");
