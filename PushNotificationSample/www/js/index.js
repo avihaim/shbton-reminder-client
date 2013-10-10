@@ -17,7 +17,7 @@
  * under the License.
  */
 
-var URL = 'http://192.168.1.100:8080/shbton/users/';
+var URL = '';
 var USER_ID = 'user1';
 var app = {
 
@@ -94,12 +94,14 @@ var app = {
 			return;
 		}
 		
-		if(hash.match(this.getGeoLocationURL)) {
+		if(hash.match(this.getCandleLighting)) {
+			this.slidePage(new CandleLightingView());
+		} else if(hash.match(this.getGeoLocationURL)) {
 			this.slidePage(this.homePage);
 			var match = hash.split("\/")[1];
 			
 			this.store.findGeoByName(match, function(geoLocation) {
-				
+				var userId = window.localStorage.getItem("userId");
 				var geo = "{\"locationName\":\"" +  geoLocation.locationName +"\"," +
     			"\"latitude\":\"" +  geoLocation.latitude +" \"," +
     			"\"longitude\":\"" +  geoLocation.longitude +"\"," +
@@ -107,7 +109,7 @@ var app = {
     			"\"timeZone\":\"" +  geoLocation.timeZone +"\"}";
     	
 		    	 var request = $.ajax({
-		             url: URL + USER_ID + '/geolocations',
+		             url: URL + userId + '/geolocations',
 		             type: 'post',
 		             crossDomain: true,
 		             async: true,
@@ -115,7 +117,6 @@ var app = {
 		             dataType: 'json'
 		         });
 			});
-				
 			
 		} else if(hash.match(this.geoURL)) {
 			self.slidePage(new GeoLocationsView(this.store).render());
@@ -128,7 +129,9 @@ var app = {
 					$('.save').bind(
 							"click",
 							function() {
-
+								
+								var userId = window.localStorage.getItem("userId");
+								
 								var reminder = "{\"id\": \"" + $('#eventIs').val() + "\"," 
 										+ "\"text\":\"" + $('#text').val() + "\","
 										+ "\"isShbat\": \"true\","
@@ -140,7 +143,7 @@ var app = {
 										+ $('#minutes').val() + "\"}";
 
 								var request = $.ajax({
-									url : URL + USER_ID + '/reminders',
+									url : URL + userId + '/reminders',
 									type : 'post',
 									crossDomain : true,
 									async : true,
@@ -160,15 +163,18 @@ var app = {
 	// Application Constructor
 	initialize : function() {
 		
+		this.store = new LocalStorageStore(function() {
+			self.route();
+		});
+		USER_ID = this.store.getUserId();
+		
 		this.bindEvents();
 		var self = this;
 		this.geoURL = /^#geo/;
 		this.getGeoLocationURL = /^#getGeoLocation/;
+		this.getCandleLighting = /^#candleLighting/;
 		this.registerEvents();
-		this.store = new LocalStorageStore(function() {
-			self.route();
-		});
-
+		
 	},
 	// Bind Event Listeners
 	//
@@ -198,23 +204,6 @@ var app = {
 		var regid = window.localStorage.getItem("notificationId");
 		var userId = window.localStorage.getItem("userId");
 
-		if (userId == '') {
-			request = $.ajax({
-				url : URL,
-				type : 'GET',
-				async : false
-			});
-
-			request.fail(function(jqXHR, textStatus) {
-				alert("Request failed: " + textStatus);
-			});
-
-			request.done(function(userId) {
-				window.localStorage.setItem("userId", userId);
-			});
-		}
-
-		USER_ID = userId;
 		// if(regid == '') {
 		var pushNotification = window.plugins.pushNotification;
 		if (device.platform == 'android' || device.platform == 'Android') {
@@ -304,5 +293,7 @@ var app = {
 $(document).ready(
 
 function() {
+	window.localStorage.setItem("url", 'http://192.168.1.100:8080/shbton/users/');
+	URL = window.localStorage.getItem("url");
 	app.initialize();
 });

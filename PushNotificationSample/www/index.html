@@ -33,6 +33,7 @@
     	<div class='header'><h1>Home</h1></div>
 		<a href='#geo' class="choose-location-btn">Add Location</a>
 		<a href='#reminders/0' class="add-event-btn" id='add'>Add Event</a>
+		<a href='#candleLighting' class="show-candleLighting-btn">זמן הדלקת נרות</a>
 		<div class='search-bar'><input class='search-key' type="search"/></div>
  		<div class="scroll"><ul class='reminder-list'></ul></div>
     	<ul class='reminder'></ul>
@@ -69,6 +70,16 @@
     	<li><a href="#getGeoLocation/{{this.locationName}}">{{this.locationName}}</a></li>
     	{{/.}}
 	</script>
+	
+	<script id="candleLighting-tpl" type="text/x-handlebars-template">
+		<div class='header'><a href='#' class="button header-button header-button-left">Back</a></div>
+    	<div class='header'><h1>הדלקת נרות</h1></div>
+ 		<div class="candleLightingTime"></div>
+	</script>
+	
+	<script id="candleLighting-time-tpl" type="text/x-handlebars-template">
+    	<h1>{{this.time}}</h1>
+	</script>
 
 	<script type="text/javascript" src="phonegap.js"></script>
 	<script type="text/javascript" src="PushNotification.js"></script>
@@ -80,6 +91,7 @@
 	<script src="js/HomeView.js"></script>
 	<script src="js/EmployeeView.js"></script>
 	<script src="js/GeoLocationsView.js"></script>
+	<script src="js/CandleLightingView.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
 
 </body>

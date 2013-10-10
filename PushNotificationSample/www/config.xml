@@ -55,4 +55,5 @@
     <gap:splash gap:platform="winphone" src="res/screen/windows-phone/screen-portrait.jpg" />
 <!--     <gap:plugin name="com.adobe.plugins.pushplugin" /> -->
     <access origin="http://192.168.1.100*" />
+    <access origin="http://vmedu34.mtacloud.co.il*" />
 </widget>

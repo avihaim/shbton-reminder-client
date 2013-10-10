@@ -1,6 +1,5 @@
 var LocalStorageStore = function(successCallback, errorCallback) {
-	var USER_ID = 'user1';
-	var URL = 'http://192.168.1.100:8080/shbton/users/';
+	
 	var remindersTemp = [
                      {"id": "1", "text": "dfv", "isShbat": "true", "isHoliday":"false", "isBefore": "false", "days":0, "hours":1, "minutes":15},
                      {"id": "048036b8-7076-4373-96fa-ae23dc83905c", "text": "blabla", "isShbat": "true", "isHoliday":"false", "isBefore": "false", "days":0, "hours":1, "minutes":15},
@@ -30,6 +29,9 @@ var LocalStorageStore = function(successCallback, errorCallback) {
     	    var reminders = window.localStorage.getItem("reminders");
 
     	    if(reminders.length == 0) {
+	        	var USER_ID = window.localStorage.getItem("userId");
+	        	var URL = window.localStorage.getItem("url");
+    	    	
     	    	var request = $.ajax({
     	    		url : URL + USER_ID + '/reminders',
     	    		type : 'GET'
@@ -81,6 +83,29 @@ var LocalStorageStore = function(successCallback, errorCallback) {
     this.getGeoLocations = function(callback) {
     	var geoLocations = JSON.parse(window.localStorage.getItem("geoLocations"));
         callLater(callback, geoLocations);
+    }
+    
+    this.getUserId = function() {
+    	var userId = window.localStorage.getItem("userId");
+
+		if ((userId == null) || (userId == 'userId1')) {
+			request = $.ajax({
+				url : URL,
+				type : 'GET',
+				async : false
+			});
+
+			request.fail(function(jqXHR, textStatus) {
+				window.localStorage.setItem("userId", 'userId1');
+				userId = 'userId1';
+			});
+
+			request.done(function(newUserId) {
+				window.localStorage.setItem("userId", newUserId);
+				userId = newUserId;
+			});
+		}
+		return userId;
     }
     
     this.findGeoByName = function(name, callback) {

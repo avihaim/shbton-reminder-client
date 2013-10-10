@@ -1,6 +1,4 @@
 var HomeView = function(store) {
-	var USER_ID = 'user1';
-	var URL = 'http://192.168.1.100:8080/shbton/users/';
 	
 	this.render = function() {
 	    this.el.html(HomeView.template());

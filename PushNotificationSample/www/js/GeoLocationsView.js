@@ -1,6 +1,4 @@
 var GeoLocationsView = function(store) {
-	var USER_ID = 'user1';
-	var URL = 'http://192.168.1.100:8080/shbton/users/';
 	
 	this.render = function() {
 	    this.el.html(GeoLocationsView.template());
@@ -12,7 +10,9 @@ var GeoLocationsView = function(store) {
 	    navigator.geolocation.getCurrentPosition(
 	        function(position) {
 	        	var timezone = jstz.determine();
-	
+	        	var USER_ID = window.localStorage.getItem("userId");
+	        	var URL = window.localStorage.getItem("url");
+	        	
 	        	var geo = "{\"locationName\":\"bla\"," +
 	        			"\"latitude\":\"" +  position.coords.latitude +" \"," +
 	        			"\"longitude\":\"" +  position.coords.longitude +"\"," +
