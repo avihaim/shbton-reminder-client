@@ -15,6 +15,28 @@ var LocalStorageStore = function(successCallback, errorCallback) {
     }
     
     this.getReminders = function(callback) {
+    	
+    	//$.getJSON( URL + USER_ID + '/reminders', this.addReminders);
+    	   // window.localStorage.setItem("reminders", JSON.stringify(remindersTemp));
+    	    var reminders = [];//window.localStorage.getItem("reminders");
+    	    window.localStorage.setItem("reminders", JSON.stringify(reminders));
+    	    if(reminders.length == 0) {
+    	    	var request = $.ajax({
+    	    		url : URL + USER_ID + '/reminders',
+    	    		type : 'GET'
+    	    	});
+
+    	    	request.done(function(remindersjson) {
+    				alert( JSON.parse(remindersjson));
+    				window.localStorage.setItem("reminders", JSON.stringify(remindersjson));
+    				reminders = remindersjson;
+    	    	});
+    	    	
+    	    	request.fail(function() {
+    	    		window.localStorage.setItem("reminders", JSON.stringify(remindersTemp));
+    	    	})
+    	    }
+    	    
         var reminders = JSON.parse(window.localStorage.getItem("reminders"));
         callLater(callback, reminders);
     }
@@ -47,25 +69,7 @@ var LocalStorageStore = function(successCallback, errorCallback) {
         }
     }
 
-    //$.getJSON( URL + USER_ID + '/reminders', this.addReminders);
-   // window.localStorage.setItem("reminders", JSON.stringify(remindersTemp));
-    var reminders = [];//window.localStorage.getItem("reminders");
-    if(reminders.length == 0) {
-    	var request = $.ajax({
-    		url : URL + USER_ID + '/reminders',
-    		type : 'GET'
-    	});
-
-    	request.done(function(remindersjson) {
-			alert(remindersjson);
-			window.localStorage.setItem("reminders", JSON.stringify(remindersjson));
-			reminders = remindersjson;
-    	});
-    	
-    	request.fail(function() {
-    		window.localStorage.setItem("reminders", JSON.stringify(remindersTemp));
-    	})
-    }
+    
     
     callLater(successCallback);
 
