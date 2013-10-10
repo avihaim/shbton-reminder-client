@@ -62,7 +62,6 @@ var app = {
 		});
 
 	},
-
 	showAlert : function(message, title) {
 		if (navigator.notification) {
 			navigator.notification.alert(message, null, title, 'OK');
@@ -70,7 +69,6 @@ var app = {
 			alert(title ? (title + ": " + message) : message);
 		}
 	},
-
 	registerEvents : function() {
 		$(window).on('hashchange', $.proxy(this.route, this));
 		$('body').on('mousedown', 'a', function(event) {
@@ -93,17 +91,18 @@ var app = {
 			}
 			return;
 		}
-		var match = hash.match(this.detailsURL);
+		
+		var match = hash.split("\/")[1]; // hash.match(this.detailsURL);
 		if (match) {
-			this.store.findById(Number(match[1]), function(reminder) {
+			this.store.findById(match, function(reminder) {
 				self.slidePage(new EmployeeView(reminder).render());
 
 				$('.save').bind(
 						"click",
 						function() {
 
-							var reminder = "{\"id\": \"1\"," + "\"text\":\""
-									+ $('#text').val() + "\","
+							var reminder = "{\"id\": \"" + $('#eventIs').val() + "\"," 
+									+ "\"text\":\"" + $('#text').val() + "\","
 									+ "\"isShbat\": \"true\","
 									+ "\"isHoliday\":\"false\", "
 									+ "\"isBefore\": \"true\"," + "\"days\":\""
@@ -128,42 +127,11 @@ var app = {
 	},
 	// Application Constructor
 	initialize : function() {
-
-		$.ajax({
-			url : "http://fiddle.jshell.net/favicon.png",
-			beforeSend : function(xhr) {
-				xhr.overrideMimeType("text/plain; charset=x-user-defined");
-			}
-		}).done(function(data) {
-			alert(data);
-			if (console && console.log) {
-				console.log("Sample of data:", data.slice(0, 100));
-			}
-		});
-
-		var request = $.ajax({
-			url : URL + USER_ID + '/reminders',
-			type : 'GET',
-			success : function(data) {
-				alert("success");
-			},
-		});
-
-		request
-				.done(function(reminders) {
-					alert(reminders);
-					window.localStorage.setItem("reminders", JSON
-							.stringify(reminders));
-				});
-
-		request.fail(function(jqXHR, textStatus) {
-			alert("Request failed: " + textStatus);
-		});
-
+		//[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}
+		
 		this.bindEvents();
-
 		var self = this;
-		this.detailsURL = /^#reminders\/(\d{1,})/;
+		this.detailsURL = /^#reminders\/(\w|-*)/;
 		this.registerEvents();
 		this.store = new LocalStorageStore(function() {
 			self.route();

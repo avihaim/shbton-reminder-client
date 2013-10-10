@@ -17,7 +17,7 @@
     specific language governing permissions and limitations
     under the License.
 -->
-<html>
+<html DIR="RTL">
 <head>
 <meta charset="utf-8" />
 <meta name="format-detection" content="telephone=no" />
@@ -34,15 +34,18 @@
 	<!-- 			<p class="event listening">Connecting to Device</p> -->
 	<!-- 			<p class="event received">Device is Ready</p> -->
 	<!-- 		</div> -->
-	<!-- 	</div> -->
+	<!-- 	</div> --> 
 
 	<script src="css/source-sans-pro.js"></script>
 	<script id="home-tpl" type="text/x-handlebars-template">
     	<div class='header'><h1>Home</h1></div>
 		<a href='#' class="add-location-btn">Add Location</a>
-    	<div class='search-bar'><input class='search-key' type="search"/></div>
+		<a href='#reminders/0' class="add-event-btn" id='add'>Add Event</a>
+    	<div class='panel-bar'>
+			<div class='search-bar'><input class='search-key' type="search"/></div>
+		</div>
  		<div class="scroll"><ul class='reminder-list'></ul></div>
-    	<ul class='reminder-list'></ul>
+    	<ul class='reminder'></ul>
 	</script>
 
 	<script id="reminder-li-tpl" type="text/x-handlebars-template">
@@ -54,6 +57,7 @@
 	<script id="reminder-tpl" type="text/x-handlebars-template">
     	<div class='header'><a href='#' class="button header-button header-button-left">Back</a><h1>Details</h1></div>
     	<div class='details'>
+			<input type="hidden" id="eventIs" name="text" value={{id}}>
 			<input type="text" id="text" name="text" value={{text}}>
 			<input type="number" id="days" name="days" value={{days}} min="0" max="7">
 			<input type="number" id="hours" name="hours" value={{hours}} min="0" max="24">
