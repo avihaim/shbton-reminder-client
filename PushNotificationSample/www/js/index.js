@@ -175,23 +175,6 @@ var app = {
 		this.getCandleLighting = /^#candleLighting/;
 		this.registerEvents();
 		
-		var url = window.localStorage.getItem("url");
-		var userId = window.localStorage.getItem("userId");
-		var regid = window.localStorage.getItem("notificationId")
-		request = $.ajax({
-			url : url + userId + '/notifications',
-			type : 'POST',
-			async : true,
-			data : regid
-		});
-
-		request.fail(function(jqXHR, textStatus) {
-			alert("Request failed: " + textStatus);
-		});
-
-		request.done(function() {
-			window.localStorage.setItem("notificationId", e.regid);
-		});
 		
 	},
 	// Bind Event Listeners
@@ -221,9 +204,11 @@ var app = {
 
 		var regid = window.localStorage.getItem("notificationId");
 		var userId = window.localStorage.getItem("userId");
-
+		alert("receivedEvent 2");
 		// if(regid == '') {
 		var pushNotification = window.plugins.pushNotification;
+		alert("receivedEvent 3");
+
 		if (device.platform == 'android' || device.platform == 'Android') {
 			alert("Register called");
 			pushNotification.register(this.successHandler, this.errorHandler, {
